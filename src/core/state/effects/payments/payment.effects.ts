@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
+import { HttpStatusCode } from '@angular/common/http';
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
-import { map, exhaustMap, catchError, tap } from 'rxjs/operators';
+import { map, exhaustMap, catchError } from 'rxjs/operators';
 import { NzMessageService } from 'ng-zorro-antd/message';
 
 import { PaymentActions } from '@core/state/actions/payments';
@@ -10,7 +11,6 @@ import { PaymentTransactions } from '@core/state/models/payments';
 
 import { PaymentService } from '@core/services';
 
-import { StatusCodes } from 'http-status-codes';
 import { Params } from '@angular/router';
 
 @Injectable()
@@ -32,7 +32,7 @@ export class PaymentsEffects {
           ),
           catchError((err) => {
             const { status, error } = err;
-            if (status === StatusCodes.UNAUTHORIZED) {
+            if (status === HttpStatusCode.Unauthorized) {
               this.message.error('You are not authorized');
             } else {
               this.message.error('Error fetching payments');

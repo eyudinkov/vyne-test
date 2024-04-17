@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { HttpStatusCode } from '@angular/common/http';
+
 import { Actions, ofType, createEffect } from '@ngrx/effects';
 import { of } from 'rxjs';
 import { map, exhaustMap, catchError, tap } from 'rxjs/operators';
@@ -9,9 +11,7 @@ import { LoginActions } from '@core/state/actions/auth';
 
 import { Login } from '@core/state/models/auth';
 
-import { AuthService, StorageService } from '@core/services';
-
-import { StatusCodes } from 'http-status-codes';
+import { AuthService } from '@core/services';
 
 import { TOKEN } from '@core/constants';
 import { HttpErrorResponse } from '@angular/common/http';
@@ -22,8 +22,7 @@ export class AuthEffects {
     private actions$: Actions,
     private authService: AuthService,
     private router: Router,
-    private message: NzMessageService,
-    private storage: StorageService
+    private message: NzMessageService
   ) {}
 
   protected login$ = createEffect(() =>
@@ -35,7 +34,7 @@ export class AuthEffects {
 
         if (incomingToken !== TOKEN) {
           const httpError = new HttpErrorResponse({
-            status: StatusCodes.UNAUTHORIZED,
+            status: HttpStatusCode.Unauthorized,
           });
           this.message.error('Invalid login or password');
           return of(LoginActions.loginFailed({ payload: httpError.error }));
@@ -46,7 +45,7 @@ export class AuthEffects {
           catchError((err: HttpErrorResponse) => {
             const { status, error } = err;
 
-            if (status === StatusCodes.UNAUTHORIZED) {
+            if (status === HttpStatusCode.Unauthorized) {
               this.message.error('Invalid login or password');
             } else {
               this.message.error('Unexpected error occurred');

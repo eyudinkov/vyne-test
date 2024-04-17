@@ -5,6 +5,7 @@ import {
   HttpHandler,
   HttpEvent,
   HttpErrorResponse,
+  HttpStatusCode,
 } from '@angular/common/http';
 import { Store } from '@ngrx/store';
 import { Observable, throwError } from 'rxjs';
@@ -29,7 +30,10 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError((response: HttpErrorResponse) => {
-        if (response instanceof HttpErrorResponse && response.status === 401) {
+        if (
+          response instanceof HttpErrorResponse &&
+          response.status === HttpStatusCode.Unauthorized
+        ) {
           this.httpCancelService.cancelPendingRequests();
           this.store.dispatch(LoginActions.logout());
         }
