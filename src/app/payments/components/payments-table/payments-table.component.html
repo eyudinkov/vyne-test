@@ -1,0 +1,114 @@
+<nz-table
+  #reportTable
+  [nzData]="list || []"
+  [nzFrontPagination]="false"
+  [nzLoading]="loading"
+  [nzTotal]="total || 0"
+  [nzPageSize]="tableParams.pageSize"
+  [nzPageIndex]="tableParams.currentPage + 1"
+  [nzNoResult]="emptyTable"
+  [nzScroll]="{ x: '100px' }"
+  (nzPageIndexChange)="changeCurrentPage($event)"
+>
+  <thead>
+    <tr>
+      <th
+        *ngFor="let column of columns"
+        [nzSortOrder]="$any(column.sortOrder)"
+        [nzSortFn]="$any(column.sortFn)"
+        nzWidth="{{ column.width || 300 }}px"
+        [nzAlign]="'left'"
+        [nzCustomFilter]="
+          column.key === 'createdAt' || !!filterList[column.key]
+        "
+      >
+        {{ column.title }}
+        <nz-filter-trigger
+          *ngIf="column.key === 'createdAt'"
+          [nzVisible]="isFilterDateDropdownVisible"
+          (nzVisibleChange)="changeDateFilterVisibility($event)"
+          [nzActive]="!!filterDate"
+          [nzDropdownMenu]="dropdownFilterDate"
+        >
+          <i nz-icon nzType="filter" nzTheme="fill"></i>
+        </nz-filter-trigger>
+        <nz-filter-trigger
+          *ngIf="filterList[column.key]"
+          [nzVisible]="
+            isFilterDropdownVisible && activeFilterKey === column.key
+          "
+          [nzActive]="!!tableParams.filter[column.key]"
+          [nzDropdownMenu]="filter"
+          (nzVisibleChange)="changeFilterVisibility(column.key, $event)"
+        >
+          <span nz-icon nzType="filter" nzTheme="fill"></span>
+        </nz-filter-trigger>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr class="row-item" *ngFor="let data of reportTable.data">
+      <td>
+        {{ data.id }}
+      </td>
+      <td>
+        {{ data.amount | currency : data.currency }}
+      </td>
+      <td>{{ data.description }}</td>
+      <td>
+        <nz-tag [nzColor]="data.status | statusMapper">{{
+          data.status
+        }}</nz-tag>
+      </td>
+      <td>{{ data.createdAt | date : "dd.MM.yyyy HH:mm" }}</td>
+    </tr>
+  </tbody>
+</nz-table>
+
+<nz-dropdown-menu #filter="nzDropdownMenu">
+  <table-filter-list
+    [list]="filterList[activeFilterKey || '']"
+    (filterChanged)="changeFilter($event)"
+    (resetSearch)="resetFilter()"
+    (searchValue)="applyFilter()"
+  >
+  </table-filter-list>
+</nz-dropdown-menu>
+
+<nz-dropdown-menu #dropdownFilterDate="nzDropdownMenu">
+  <div class="ant-table-filter-dropdown">
+    <nz-range-picker
+      #datePicker
+      [ngModel]="filterDate"
+      [nzAllowClear]="false"
+      [nzDropdownClassName]="'filter-date'"
+      [nzRenderExtraFooter]="footerDropdownFilterDate"
+      (ngModelChange)="changeDateFilter($event)"
+    >
+    </nz-range-picker>
+  </div>
+</nz-dropdown-menu>
+
+<ng-template #footerDropdownFilterDate>
+  <nz-row [nzGutter]="16" nzJustify="end">
+    <nz-col>
+      <button nz-button nzSize="small" (click)="resetDateFilter()">
+        Reset
+      </button>
+    </nz-col>
+    <nz-col>
+      <button
+        nz-button
+        nzSize="small"
+        nzType="primary"
+        (click)="applyDateFilter()"
+      >
+        Search
+      </button>
+    </nz-col>
+  </nz-row>
+</ng-template>
+
+<ng-template #emptyTable>
+  <empty-table></empty-table>
+</ng-template>

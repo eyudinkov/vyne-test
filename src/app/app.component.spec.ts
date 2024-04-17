@@ -1,29 +1,38 @@
 import { TestBed } from '@angular/core/testing';
+import { RouterModule } from '@angular/router';
+import { MainLayoutModule } from '@core/modules/main-layout';
+import { StoreModule } from '@ngrx/store';
+import { ROOT_REDUCER, metaReducers } from '@core/state/reducers';
+import { EffectsModule } from '@ngrx/effects';
+import { AuthEffects, PaymentsEffects } from '@core/state/effects';
+import { HttpClientModule } from '@angular/common/http';
+
+import { EventBusService } from '@core/services';
+
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
+  let component: AppComponent;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [AppComponent],
+      imports: [
+        RouterModule,
+        MainLayoutModule,
+        StoreModule.forRoot(ROOT_REDUCER, {
+          metaReducers,
+        }),
+        EffectsModule.forRoot([AuthEffects, PaymentsEffects]),
+        HttpClientModule,
+      ],
+      declarations: [AppComponent],
+      providers: [EventBusService],
     }).compileComponents();
+    const fixture = TestBed.createComponent(AppComponent);
+    component = fixture.componentInstance;
   });
 
   it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app).toBeTruthy();
-  });
-
-  it(`should have the 'payment-dashboard' title`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.componentInstance;
-    expect(app.title).toEqual('payment-dashboard');
-  });
-
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement as HTMLElement;
-    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, payment-dashboard');
+    expect(component).toBeTruthy();
   });
 });

@@ -1,0 +1,34 @@
+<div class="ant-table-filter-dropdown">
+  <div class="table-search">
+    <ul nz-menu>
+      <li
+        nz-menu-item
+        [nzSelected]="f.checked"
+        *ngFor="let f of list; trackBy: trackByValue"
+        (click)="select(f)"
+      >
+        <label
+          nz-radio
+          [ngModel]="f.checked"
+          (ngModelChange)="select(f)"
+        ></label>
+        <span>{{ f.text }}</span>
+      </li>
+    </ul>
+
+    <div class="table-search__actions">
+      <button
+        nz-button
+        nzSize="small"
+        nzType="link"
+        [disabled]="!haveCheckedItems"
+        (click)="reset()"
+      >
+        Reset
+      </button>
+      <button nz-button nzSize="small" nzType="link" (click)="handlerSearch()">
+        Search
+      </button>
+    </div>
+  </div>
+</div>

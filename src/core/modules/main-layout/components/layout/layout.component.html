@@ -1,0 +1,20 @@
+<nz-layout class="layout" *ngIf="showLayout">
+  <nz-layout class="content-layout">
+    <header class="header"></header>
+    <div class="content">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </div>
+  </nz-layout>
+</nz-layout>
+
+<nz-layout class="layout" *ngIf="!showLayout">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+</nz-layout>
+
+<ng-template #content>
+  <nz-spin [nzSpinning]="loadingRoute" class="spinner">
+    <ng-content></ng-content>
+  </nz-spin>
+</ng-template>
+
+<wm-teleport name="bodyTeleport"></wm-teleport>

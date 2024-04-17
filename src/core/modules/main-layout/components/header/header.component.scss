@@ -1,0 +1,61 @@
+.header {
+  position: fixed;
+  z-index: 20;
+  top: 0;
+  right: 0;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 0;
+  background: #0c0128;
+  box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s;
+  padding-left: 16px;
+}
+
+.logotype {
+  margin-left: 24px;
+}
+
+.content {
+  flex: 1 1 auto;
+  overflow: hidden;
+  display: flex;
+  justify-content: flex-end;
+
+  .content__right {
+    display: flex;
+    align-items: center;
+    width: 100%;
+
+    ::ng-deep .ant-btn {
+      margin-left: -1px;
+      height: 100%;
+      padding-top: 0;
+      padding-bottom: 0;
+      border-radius: 0;
+      line-height: 64px;
+      border-bottom: none;
+      border-top: none;
+
+      span {
+        line-height: 1;
+      }
+    }
+  }
+}
+
+.main {
+  flex: 0 0 auto;
+  padding: 0 16px;
+}
+
+.avatar {
+  margin-right: 8px;
+  background: #a6dbff;
+
+  ::ng-deep .anticon {
+    font-size: 12px;
+    color: #fff;
+  }
+}

@@ -1,0 +1,21 @@
+.layout {
+  min-height: 100vh;
+}
+
+.content-layout {
+  display: flex;
+  flex-direction: column;
+
+  ::ng-deep header {
+    height: 84px;
+  }
+}
+
+.content {
+  flex: 1 1 auto;
+  padding: 0 16px 16px;
+}
+
+.spinner {
+  height: 100%;
+}

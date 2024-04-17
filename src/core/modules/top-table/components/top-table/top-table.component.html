@@ -1,0 +1,25 @@
+<div class="top {{ className }}">
+  <div class="col">
+    <ng-container *ngIf="content; else defaultContent">
+      <ng-container *ngTemplateOutlet="content"></ng-container>
+    </ng-container>
+    <ng-template #defaultContent>
+      <i nz-icon nzType="info-circle" nzTheme="fill"></i>
+      <ng-container *ngIf="totalTemplate && !loading">
+        <ng-container *ngTemplateOutlet="totalTemplate"></ng-container>
+      </ng-container>
+      <ng-container *ngIf="!totalTemplate">
+        {{ totalString }}
+      </ng-container>
+      <ng-container *ngIf="loading">
+        <i nz-icon nzType="loading" nzTheme="outline" class="spin"></i>
+      </ng-container>
+      <ng-container *ngIf="!loading">
+        <strong class="total">{{ total }}</strong>
+      </ng-container>
+    </ng-template>
+  </div>
+  <div class="col">
+    <ng-content></ng-content>
+  </div>
+</div>

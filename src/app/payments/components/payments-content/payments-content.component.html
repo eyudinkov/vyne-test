@@ -1,0 +1,12 @@
+<top-table [total]="data?.totalNumberOfItems" [loading]="loading">
+  <button nz-button (click)="update()" nzType="primary">
+    <i nz-icon nzType="redo" [nzSpin]="loading" nzTheme="outline"></i>
+    Update
+  </button>
+</top-table>
+
+<payments-table
+  [total]="data?.totalNumberOfItems"
+  [loading]="loading"
+  [list]="data?.items"
+></payments-table>

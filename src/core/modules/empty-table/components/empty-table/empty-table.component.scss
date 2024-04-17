@@ -1,0 +1,13 @@
+.empty {
+  ::ng-deep {
+    .ant-empty-image {
+      height: auto;
+      margin-bottom: 2px;
+    }
+
+    .ant-empty-description {
+      margin: 0;
+      color: #bfbfbf;
+    }
+  }
+}
